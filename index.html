@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEX VERSE - Language of Digital World</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@300;400;700&family=Inter:wght@400;500;600;700&family=Exo+2:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 4rem; /* Offset for fixed header */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated background for the whole page */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(ellipse at 70% 20%, rgba(168, 85, 247, 0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 90%, rgba(126, 34, 206, 0.25) 0%, transparent 45%);
+            animation: move-glows 25s linear infinite;
+        }
+
+        /* Subtle noise texture for the background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            animation: noise 2s steps(1) infinite;
+            z-index: -1;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39sbGxvb29paWlxcXF6enp9fX1RUUEgAAAAQklEQVR42r3P22oAIAwE0Pz/v32f3egu6Qo_xwKKnAd8s1zbK9K3jTwM4suFNpgoA4wQcamgI4w+bHw/9e8bW5s/2f444/pBCy4B72+k83s/b2T8T3s70DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAb0DAa4Gqfbeb2eAN46fBexlFhN4D5z/K0nFP4slgiyB/4A4AnwA4AbwBsA/8QcAR424A/0QdAR4A9wD0v6X2pINUAAAAASUVORK5CYII=);
+            opacity: 0.5;
+        }
+
+        @keyframes noise {
+          0%, 100% { background-position: 0 0; }
+          10% { background-position: -5% -10%; }
+          20% { background-position: -15% 5%; }
+          30% { background-position: 7% -25%; }
+          40% { background-position: 20% 25%; }
+          50% { background-position: -25% 10%; }
+          60% { background-position: 15% 5%; }
+          70% { background-position: 0% 15%; }
+          80% { background-position: 25% 35%; }
+          90% { background-position: -10% 10%; }
+        }
+
+        h1, h2, h3 {
+             font-family: 'Orbitron', sans-serif;
+        }
+
+        @keyframes move-glows {
+            0% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .placeholder-text::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .hero-title-shine {
+            position: relative;
+            color: #f3e8ff;
+            text-shadow: 0 0 10px rgba(216, 180, 254, 0.5), 0 0 40px rgba(168, 85, 247, 0.5);
+        }
+
+        .hero-subtitle {
+            font-family: 'Orbitron', sans-serif;
+            color: #d8b4fe;
+            text-shadow: 0 0 15px rgba(216, 180, 254, 0.4);
+        }
+        
+        /* --- CARD STYLES --- */
+        .card-grid-bg {
+            background-color: #000000;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-grid-bg:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 35px rgba(168, 85, 247, 0.4);
+        }
+        .purple-glow-effect {
+             box-shadow: 0 0 12px rgba(168, 85, 247, 0.4), 0 0 25px rgba(168, 85, 247, 0.3);
+        }
+        
+        .icon-glow-purple {
+            filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.8));
+        }
+
+        .service-card-description {
+            font-family: 'Exo 2', sans-serif;
+            color: #e9d5ff;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            text-shadow: 0 0 8px rgba(216, 180, 254, 0.3);
+        }
+
+        /* --- Scroll Animation --- */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Staggered delay for items in a grid */
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        
+        /* Improved Button Styles */
+        .primary-button {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .primary-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+        }
+
+        /* Process Step Circle Animation */
+        .process-step-circle {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(168, 85, 247, 0.7);
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/70 backdrop-blur-md border-b border-purple-800/50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" class="flex items-center space-x-3">
+                     <span class="text-xl font-semibold font-['Orbitron',_sans-serif]">LEX VERSE</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#services" class="text-sm text-purple-200 hover:text-white transition-colors">Services</a>
+                    <a href="#process" class="text-sm text-purple-200 hover:text-white transition-colors">Process</a>
+                    <a href="#contact" class="text-sm text-purple-200 hover:text-white transition-colors">Contact</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <a href="#contact" class="hidden sm:block bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-5 rounded-lg text-sm transition-all duration-300 shadow-lg shadow-purple-600/30 hover:shadow-purple-500/50 primary-button">
+                        Get a Quote
+                    </a>
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" aria-label="Open menu" class="text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 rounded">
+                             <svg id="menu-open-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                             <svg id="menu-close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <nav class="px-2 pt-2 pb-4 space-y-1 sm:px-3 border-t border-purple-800/50">
+                <a href="#services" class="block text-purple-200 hover:bg-purple-900/50 hover:text-white px-3 py-2 rounded-md text-base font-medium">Services</a>
+                <a href="#process" class="block text-purple-200 hover:bg-purple-900/50 hover:text-white px-3 py-2 rounded-md text-base font-medium">Process</a>
+                <a href="#contact" class="block text-purple-200 hover:bg-purple-900/50 hover:text-white px-3 py-2 rounded-md text-base font-medium">Contact</a>
+                <a href="#contact" class="block sm:hidden bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-3 rounded-lg text-sm text-center transition-all duration-300 mt-2 primary-button">
+                    Get a Quote
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center items-center pt-16">
+            <div class="w-full max-w-3xl px-4 text-center mx-auto relative z-10">
+                <div class="mb-8 animate-on-scroll">
+                    <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-4 hero-title-shine">
+                        LEX VERSE
+                    </h1>
+                    <p class="hero-subtitle text-2xl md:text-3xl max-w-3xl mx-auto tracking-wider">
+                        Turning your vision into a Digital Experience
+                    </p>
+                </div>
+
+                <!-- Project Starter -->
+                <div class="animate-on-scroll">
+                    <div class="relative z-10 bg-black rounded-xl flex items-center justify-between p-2">
+                        <div class="flex-grow mx-2 relative">
+                            <input type="text" id="search-input" class="w-full bg-transparent text-white placeholder-purple-300/50 focus:outline-none text-lg text-center md:text-left pl-4" placeholder="">
+                            <span id="placeholder" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-4 md:-translate-x-0 text-lg text-purple-300/50 pointer-events-none placeholder-text"></span>
+                        </div>
+                        <a href="https://www.instagram.com/lexverse_bh?utm_source=qr" id="start-project-btn" target="_blank" rel="noopener noreferrer" class="relative bg-purple-600 hover:bg-purple-500 text-white p-2.5 rounded-lg transition-colors inline-block primary-button">
+                            <span id="copy-tooltip" class="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-purple-500 text-white text-xs rounded py-1 px-2 opacity-0 transition-opacity whitespace-nowrap pointer-events-none">Idea copied! Paste it in our DMs.</span>
+                            <span class="hidden md:inline font-semibold pr-2">Start Project</span>
+                            <svg class="w-6 h-6 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <p class="text-sm text-purple-300 tracking-wider opacity-90 mt-4 animate-on-scroll">
+                    Tell us your idea and get a free, no-obligation quote.
+                </p>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 md:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold animate-on-scroll">Our Services</h2>
+                    <p class="text-lg text-purple-200 opacity-80 mt-2 animate-on-scroll font-['Inter',_sans-serif]">We offer a complete suite of web solutions.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                     <!-- Card 1: Web Development (Purple Theme) -->
+                     <div class="rounded-2xl p-8 card-grid-bg purple-glow-effect flex flex-col justify-between animate-on-scroll" tabindex="0">
+                         <div>
+                             <div class="w-16 h-16 mb-6 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400 icon-glow-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                </svg>
+                             </div>
+                             <h2 class="font-orbitron text-2xl font-bold text-purple-300 tracking-wide">Web Development</h2>
+                             <p class="mt-3 leading-relaxed service-card-description">We build bespoke websites that serve as the solid foundation of your digital presence.</p>
+                         </div>
+                     </div>
+
+                     <!-- Card 2: UI/UX Design -->
+                     <div class="rounded-2xl p-8 card-grid-bg purple-glow-effect flex flex-col justify-between animate-on-scroll stagger-1" tabindex="0">
+                         <div>
+                             <div class="w-16 h-16 mb-6 flex items-center justify-center">
+                                 <svg class="w-8 h-8 text-purple-400 icon-glow-purple" viewBox="0 0 40 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                     <path d="M25.8333 11.3333C25.8333 13.5424 24.0424 15.3333 21.8333 15.3333C19.6242 15.3333 17.8333 13.5424 17.8333 11.3333C17.8333 9.12423 19.6242 7.33331 21.8333 7.33331C24.0424 7.33331 25.8333 9.12423 25.8333 11.3333Z" stroke="#c084fc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                     <path d="M29.5 3.33331H10.5C6.08172 3.33331 2.5 6.91503 2.5 11.3333C2.5 15.7516 6.08172 19.3333 10.5 19.3333H22.5L32.5 29.3333V19.3333C35.2614 19.3333 37.5 17.0947 37.5 14.3333V11.3333C37.5 6.91503 33.9183 3.33331 29.5 3.33331Z" stroke="#c084fc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                 </svg>
+                             </div>
+                             <h2 class="font-orbitron text-2xl font-bold text-purple-300 tracking-wide">UI/UX Design</h2>
+                             <p class="mt-3 leading-relaxed service-card-description">Intuitive and beautiful interfaces that delight your users and create lasting impressions.</p>
+                         </div>
+                     </div>
+
+                     <!-- Card 3: Equity Partnership -->
+                     <div class="rounded-2xl p-8 card-grid-bg purple-glow-effect flex flex-col justify-between animate-on-scroll stagger-2" tabindex="0">
+                         <div>
+                             <div class="w-16 h-16 mb-6 flex items-center justify-center">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400 icon-glow-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                 </svg>
+                             </div>
+                             <h2 class="font-orbitron text-2xl font-bold text-purple-300 tracking-wide">Venture Model</h2>
+                             <p class="mt-3 leading-relaxed service-card-description">We Partner with potentially great companies.</p>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section id="process" class="py-20 md:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold animate-on-scroll">Our Process</h2>
+                    <p class="text-lg text-purple-200 opacity-80 mt-2 animate-on-scroll font-['Inter',_sans-serif]">A streamlined journey from concept to launch.</p>
+                </div>
+                <div class="relative">
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                         <!-- Step 1 -->
+                         <div class="text-center animate-on-scroll">
+                             <div class="relative flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-purple-900/50 border-2 border-purple-500 rounded-full text-2xl font-bold text-purple-300 z-10 process-step-circle">1</div>
+                             <h3 class="text-xl font-semibold mb-2">Understand</h3>
+                             <p class="text-purple-200 opacity-90 font-['Inter',_sans-serif]">We deeply understand your vision.</p>
+                         </div>
+                         <!-- Step 2 -->
+                         <div class="text-center animate-on-scroll stagger-1">
+                             <div class="relative flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-purple-900/50 border-2 border-purple-500 rounded-full text-2xl font-bold text-purple-300 z-10 process-step-circle">2</div>
+                             <h3 class="text-xl font-semibold mb-2">Design & Develop</h3>
+                             <p class="text-purple-200 opacity-90 font-['Inter',_sans-serif]">We create intuitive UI/UX and develop your application.</p>
+                         </div>
+                         <!-- Step 3 -->
+                         <div class="text-center animate-on-scroll stagger-2">
+                             <div class="relative flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-purple-900/50 border-2 border-purple-500 rounded-full text-2xl font-bold text-purple-300 z-10 process-step-circle">3</div>
+                             <h3 class="text-xl font-semibold mb-2">Deploy</h3>
+                             <p class="text-purple-200 opacity-90 font-['Inter',_sans-serif]">Deploy your application.</p>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold animate-on-scroll">Ready to Build Your Website?</h2>
+                <p class="text-xl md:text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-fuchsia-500 mt-6 max-w-2xl mx-auto animate-on-scroll font-['Inter',_sans-serif]">
+                    Contact us via Instagram.
+                </p>
+                <div class="mt-8 flex justify-center items-center space-x-4 animate-on-scroll">
+                    <a href="https://www.instagram.com/lexverse_bh?utm_source=qr" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300 shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 primary-button">
+                        <svg class="w-7 h-7 mr-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.44-1.441-1.44z"/>
+                        </svg>
+                        Instagram
+                    </a>
+                </div>
+                
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black/50 border-t border-purple-800/50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-8 md:space-y-0">
+                <div class="flex items-center space-x-3">
+                     <span class="text-xl font-semibold font-['Orbitron',_sans-serif]">LEX VERSE</span>
+                </div>
+                <div class="flex justify-center space-x-6 text-sm">
+                    <a href="#services" class="text-purple-300 hover:text-white transition-colors">Services</a>
+                    <a href="#process" class="text-purple-300 hover:text-white transition-colors">Process</a>
+                    <a href="#contact" class="text-purple-300 hover:text-white transition-colors">Contact</a>
+                </div>
+                <p class="text-purple-400 opacity-70 text-sm">&copy; 2025 LEX VERSE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Typing animation ---
+            const searchInput = document.getElementById('search-input');
+            const placeholder = document.getElementById('placeholder');
+            const phrases = ["a sleek landing page...", "a blazing-fast portfolio...", "a web app for my business..."];
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentPhrase = phrases[phraseIndex];
+                if (isDeleting) {
+                    placeholder.textContent = currentPhrase.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    placeholder.textContent = currentPhrase.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    setTimeout(() => isDeleting = true, 2000);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                }
+                
+                const typingSpeed = isDeleting ? 75 : 150;
+                setTimeout(type, typingSpeed);
+            }
+            type();
+
+            searchInput.addEventListener('input', () => {
+                placeholder.style.display = searchInput.value ? 'none' : 'inline-block';
+            });
+
+            // --- Start Project Button ---
+            const startProjectBtn = document.getElementById('start-project-btn');
+            startProjectBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default link navigation
+
+                // Determine the text to copy from input or placeholder
+                let textToCopy = searchInput.value.trim();
+                if (!textToCopy) {
+                    textToCopy = placeholder.textContent.replace('|', '').trim();
+                }
+
+                // Copy text to clipboard using a temporary textarea
+                const textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                textArea.style.position = "fixed"; // Prevent scrolling to bottom of page
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    const tooltip = document.getElementById('copy-tooltip');
+                    tooltip.classList.remove('opacity-0');
+                    setTimeout(() => {
+                        tooltip.classList.add('opacity-0');
+                    }, 2000); // Hide tooltip after 2 seconds
+                } catch (err) {
+                    console.error('Unable to copy text to clipboard', err);
+                }
+                document.body.removeChild(textArea);
+
+                // Redirect to Instagram after a short delay
+                setTimeout(() => {
+                    window.open('https://www.instagram.com/lexverse_bh?utm_source=qr', '_blank');
+                }, 300);
+            });
+
+            // --- Mobile Menu ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('menu-open-icon');
+            const closeIcon = document.getElementById('menu-close-icon');
+
+            mobileMenuButton.addEventListener('click', () => {
+                const isOpen = !mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden');
+                openIcon.classList.toggle('hidden', !isOpen);
+                closeIcon.classList.toggle('hidden', isOpen);
+            });
+
+            // Close mobile menu when a link is clicked
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    mobileMenu.classList.add('hidden');
+                    openIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                }
+            });
+
+
+            // --- Scroll Animation Script ---
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, {
+                threshold: 0.1 
+            });
+
+            animatedElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
